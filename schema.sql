@@ -11,3 +11,11 @@ INSERT INTO items
 SELECT
     'Black backpack',
     'lost'
+
+
+INSERT INTO items
+(title, type, category, location, item_date, description, contact)
+SELECT
+    'Keys with blue keychain',
+    'found',
+    'Keys'
