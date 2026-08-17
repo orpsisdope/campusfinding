@@ -18,6 +18,14 @@ INSERT INTO items
 SELECT
     'Black backpack',
     'lost'
+    'Bag',
+    'University Library',
+    CURRENT_DATE,
+    'Black backpack with a water bottle in the side pocket.',
+    'student@example.com'
+WHERE NOT EXISTS (
+    SELECT 1 FROM items WHERE title = 'Black backpack'
+);
 
 
 INSERT INTO items
