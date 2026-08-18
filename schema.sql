@@ -34,3 +34,10 @@ SELECT
     'Keys with blue keychain',
     'found',
     'Keys'
+    'Building 7',
+    CURRENT_DATE,
+    'A set of keys with a small blue keychain.',
+    'finder@example.com'
+WHERE NOT EXISTS (
+    SELECT 1 FROM items WHERE title = 'Keys with blue keychain'
+);
