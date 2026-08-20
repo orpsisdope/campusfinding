@@ -38,3 +38,41 @@ textarea {
 button {
   cursor: pointer;
 }
+
+.container {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.narrow {
+  max-width: 780px;
+}
+
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.nav-row,
+.footer-row,
+.board-heading,
+.item-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.nav-row {
+  min-height: 68px;
+}
+
+.logo {
+  color: var(--text);
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-decoration: none;
+}
