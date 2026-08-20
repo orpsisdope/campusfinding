@@ -201,3 +201,80 @@ h3 {
 .board-section {
   padding-top: 15px;
 }
+
+.two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(250px, 0.7fr);
+  gap: 42px;
+  align-items: start;
+}
+
+.section-heading {
+  margin-bottom: 26px;
+}
+
+.section-heading p:last-child {
+  color: var(--muted);
+}
+
+.report-form,
+.info-card,
+.item-card,
+.team-card,
+.notice-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.report-form {
+  padding: 26px;
+}
+
+.report-form label {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 18px;
+  font-weight: 700;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid #cfd6df;
+  border-radius: 8px;
+  background: white;
+  padding: 11px 12px;
+  color: var(--text);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 3px solid rgba(41, 87, 211, 0.14);
+  border-color: var(--primary);
+}
+
+textarea {
+  resize: vertical;
+}
+
+.info-card {
+  padding: 25px;
+  position: sticky;
+  top: 95px;
+}
+
+.info-card ol {
+  margin: 0;
+  padding-left: 21px;
+  color: var(--muted);
+}
