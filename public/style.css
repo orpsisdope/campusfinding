@@ -397,3 +397,32 @@ textarea {
     position: static;
   }
 }
+
+@media (max-width: 600px) {
+  .container {
+    width: min(100% - 24px, 1120px);
+  }
+
+  .nav-row,
+  .footer-row,
+  .board-heading {
+    align-items: flex-start;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .hero {
+    padding: 60px 0;
+  }
+
+  .section {
+    padding: 45px 0;
+  }
+
+  .report-form {
+    padding: 18px;
+  }
+}
