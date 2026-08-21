@@ -324,3 +324,76 @@ textarea {
   font-weight: 800;
   letter-spacing: 0.04em;
 }
+
+.badge.lost {
+  color: var(--lost);
+  background: #fbeaea;
+}
+
+.badge.found {
+  color: var(--found);
+  background: #e7f6ee;
+}
+
+.status-badge.open {
+  color: #735b13;
+  background: #fff6cd;
+}
+
+.status-badge.done {
+  color: #51606f;
+  background: #edf0f2;
+}
+
+.item-card h3 {
+  margin-top: 18px;
+}
+
+.item-meta,
+.item-contact {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.item-description {
+  min-height: 72px;
+}
+
+.notice-box {
+  padding: 18px 20px;
+  margin: 30px 0;
+  border-left: 4px solid var(--primary);
+  box-shadow: none;
+}
+
+.team-grid {
+  margin-bottom: 45px;
+}
+
+.team-card p {
+  color: var(--muted);
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  padding: 28px 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.site-footer p {
+  margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .two-column,
+  .items-grid,
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .info-card {
+    position: static;
+  }
+}
