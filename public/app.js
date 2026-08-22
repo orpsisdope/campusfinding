@@ -81,3 +81,67 @@ function createItemCard(item) {
 
   return article;
 }
+
+async function loadItems() {
+  itemsStatus.textContent = "Loading reports...";
+  itemsList.replaceChildren();
+
+
+  try {
+    const response = await fetch("/api/items");
+
+
+    if (!response.ok) {
+      throw new Error("Could not load reports.");
+    }
+
+
+    const items = await response.json();
+
+
+    if (items.length === 0) {
+      itemsStatus.textContent = "No reports yet. Add the first one above.";
+      return;
+    }
+
+
+    itemsStatus.textContent = `${items.length} report${items.length === 1 ? "" : "s"}`;
+
+
+    for (const item of items) {
+      itemsList.append(createItemCard(item));
+    }
+  } catch (error) {
+    itemsStatus.textContent = "Could not load reports. Check the server and database connection.";
+  }
+}
+
+
+async function resolveItem(id, button) {
+  button.disabled = true;
+  button.textContent = "Updating...";
+
+
+  try {
+    const response = await fetch(`/api/items/${id}/resolve`, {
+      method: "PATCH"
+    });
+
+
+    if (!response.ok) {
+      throw new Error("Could not update report.");
+    }
+
+
+    await loadItems();
+  } catch (error) {
+    button.disabled = false;
+    button.textContent = "Mark as resolved";
+    itemsStatus.textContent = "Could not update the report. Please try again.";
+  }
+}
+
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  formMessage.textContent = "Submitting...";
