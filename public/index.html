@@ -30,3 +30,40 @@
         <a class="button" href="#report-form">Report an item</a>
       </div>
     </section>
+
+        <section class="section">
+      <div class="container two-column">
+        <div>
+          <div class="section-heading">
+            <p class="eyebrow">New report</p>
+            <h2>Report an item</h2>
+            <p>Fill in the information below. All fields are required.</p>
+          </div>
+
+          <form id="report-form" class="report-form">
+            <label>
+              Title
+              <input id="title" name="title" maxlength="100" placeholder="Example: Black backpack" required>
+            </label>
+
+            <div class="form-row">
+              <label>
+                Type
+                <select id="type" name="type" required>
+                  <option value="lost">Lost</option>
+                  <option value="found">Found</option>
+                </select>
+              </label>
+
+              <label>
+                Category
+                <select id="category" name="category" required>
+                  <option value="Bag">Bag</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Keys">Keys</option>
+                  <option value="Clothing">Clothing</option>
+                  <option value="Books">Books</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+            </div>
