@@ -46,3 +46,46 @@ campusfind/
 5. PostgreSQL returns data to Express.
 6. Express returns JSON to the browser.
 7. Browser JavaScript displays the data on the page.
+
+
+
+###### API_ROUTES
+## GET `/api/items`
+Returns all lost and found reports.
+
+## POST `/api/items`
+Creates a new report.
+
+## Example for JSON body:
+
+json
+{
+  "title": "Black backpack",
+  "type": "lost",
+  "category": "Bag",
+  "location": "University Library",
+  "item_date": "2026-08-17",
+  "description": "Black backpack with a bottle inside.",
+  "contact": "student@example.com"
+}
+
+
+## PATCH `/api/items/:id/resolve`
+Marks one report as resolved.
+
+## GET `/api/health`
+Checks whether the web server can reach the database.
+
+
+
+
+###### TO RUN LOCALLY
+## 1. Install Node.js
+
+Use Node.js 18 or newer.
+
+Check the installation:
+
+bash
+node --version
+npm --version
