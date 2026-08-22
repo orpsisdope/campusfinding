@@ -67,3 +67,66 @@
                 </select>
               </label>
             </div>
+
+            
+            <label>
+              Location
+              <input id="location" name="location" maxlength="100" placeholder="Example: University Library" required>
+            </label>
+
+            <label>
+              Date
+              <input id="item_date" name="item_date" type="date" required>
+            </label>
+
+            <label>
+              Description
+              <textarea id="description" name="description" rows="4" placeholder="Describe the item so it can be recognized." required></textarea>
+            </label>
+
+            <label>
+              Contact
+              <input id="contact" name="contact" maxlength="120" placeholder="Email or phone number" required>
+            </label>
+
+            <button class="button" type="submit">Submit report</button>
+            <p id="form-message" class="message" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <aside class="info-card">
+          <h2>How it works</h2>
+          <ol>
+            <li>Report the lost or found item.</li>
+            <li>The report appears on the board.</li>
+            <li>Students use the contact information to get in touch.</li>
+            <li>Mark the report as resolved when the item is returned.</li>
+          </ol>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section board-section">
+      <div class="container">
+        <div class="section-heading board-heading">
+          <div>
+            <p class="eyebrow">Campus board</p>
+            <h2>Recent reports</h2>
+          </div>
+          <button id="refresh-button" class="button secondary" type="button">Refresh</button>
+        </div>
+
+        <p id="items-status" class="message" aria-live="polite">Loading reports...</p>
+        <div id="items-list" class="items-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <p>CampusFind</p>
+      <p>Fullstack Development Project</p>
+    </div>
+  </footer>
+</body>
+</html>
