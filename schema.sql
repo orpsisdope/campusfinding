@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS items (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
-    type VARCHAR(10) NOT NULL CHECK (type IN ('lost', 'found'))
+    type VARCHAR(10) NOT NULL CHECK (type IN ('lost', 'found')),
     category VARCHAR(50) NOT NULL,
     location VARCHAR(100) NOT NULL,
     item_date DATE NOT NULL,
@@ -17,7 +17,7 @@ INSERT INTO items
 (title, type, category, location, item_date, description, contact)
 SELECT
     'Black backpack',
-    'lost'
+    'lost',
     'Bag',
     'University Library',
     CURRENT_DATE,
@@ -33,7 +33,7 @@ INSERT INTO items
 SELECT
     'Keys with blue keychain',
     'found',
-    'Keys'
+    'Keys',
     'Building 7',
     CURRENT_DATE,
     'A set of keys with a small blue keychain.',

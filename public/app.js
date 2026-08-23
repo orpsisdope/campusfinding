@@ -120,4 +120,3 @@ async function resolveItem(id, button) {
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   formMessage.textContent = "Submitting...";
-  formMessage.className = "message";
