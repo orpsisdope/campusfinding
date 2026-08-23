@@ -50,13 +50,13 @@ campusfind/
 
 
 ###### API_ROUTES
-## GET `/api/items`
+## 1. GET `/api/items`
 Returns all lost and found reports.
 
 ## POST `/api/items`
 Creates a new report.
 
-## Example for JSON body:
+## 2. Example for JSON body:
 
 json
 {
@@ -89,3 +89,53 @@ Check the installation:
 bash
 node --version
 npm --version
+
+
+
+
+## 2. Install project packages
+
+Open the project folder in VS Code, open Terminal > New Terminal, then run:
+
+npm install
+
+
+## 3. Create a PostgreSQL database
+
+Create a PostgreSQL database locally or with a hosted PostgreSQL provider.
+
+Run the SQL in `schema.sql` in that database. This creates the `items` table and two example rows.
+
+## 4. Create `.env`
+
+Copy `.env.example` and rename the copy to `.env`.
+
+Add real PostgreSQL connection string:
+
+
+DATABASE_URL=postgresql://username:password@host:5432/database_name
+PORT=3000
+
+
+## 5. Start the project
+
+
+npm run dev
+
+
+Open:
+
+text
+http://localhost:3000
+
+
+Database health check:
+
+text
+http://localhost:3000/api/health
+
+
+A working connection returns:
+
+json
+{"status":"ok"}
