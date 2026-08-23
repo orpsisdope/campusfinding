@@ -6,7 +6,14 @@ const refreshButton = document.querySelector("#refresh-button");
 const dateInput = document.querySelector("#item_date");
 
 function formatDate(dateValue) {
-  const date = new Date(`${dateValue}T00:00:00`);
+  if (!dateValue) {
+    return "No date";
+  }
+
+  const dateOnly = String(dateValue).slice(0, 10);
+  const [year, month, day] = dateOnly.split("-").map(Number);
+
+  const date = new Date(year, month - 1, day);
 
   return date.toLocaleDateString("en-GB", {
     day: "numeric",
