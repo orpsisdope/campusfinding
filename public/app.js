@@ -120,3 +120,45 @@ async function resolveItem(id, button) {
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   formMessage.textContent = "Submitting...";
+  formMessage.className = "message";
+
+  const data = {
+    title: form.title.value,
+    type: form.type.value,
+    category: form.category.value,
+    location: form.location.value,
+    item_date: form.item_date.value,
+    description: form.description.value,
+    contact: form.contact.value
+  };
+
+  try {
+    const response = await fetch("/api/items", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || "Could not submit report.");
+    }
+
+    form.reset();
+    dateInput.valueAsDate = new Date();
+    formMessage.textContent = "Report added successfully.";
+    formMessage.className = "message success";
+    await loadItems();
+  } catch (error) {
+    formMessage.textContent = error.message;
+    formMessage.className = "message error";
+  }
+});
+
+refreshButton.addEventListener("click", loadItems);
+
+dateInput.valueAsDate = new Date();
+loadItems();
