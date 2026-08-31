@@ -9,6 +9,8 @@ const loginLink = document.getElementById("login-link");
 const signupLink = document.getElementById("signup-link");
 const logoutButton = document.getElementById("logout-button");
 
+let currentUserId = null;
+
 function getToken() {
   return localStorage.getItem("token") || "";
 }
@@ -16,6 +18,7 @@ function getToken() {
 function clearSession() {
   localStorage.removeItem("token");
   localStorage.removeItem("username");
+  currentUserId = null;
 }
 
 function setLoggedOutUi() {
@@ -53,18 +56,20 @@ async function validateSession() {
     }
 
     const data = await response.json();
-    const username = data.user && data.user.username;
 
-    if (!username) {
+    if (!data.user || !data.user.id || !data.user.username) {
       clearSession();
       setLoggedOutUi();
       return false;
     }
 
-    localStorage.setItem("username", username);
-    setLoggedInUi(username);
+    currentUserId = Number(data.user.id);
+    localStorage.setItem("username", data.user.username);
+    setLoggedInUi(data.user.username);
+
     return true;
-  } catch {
+  } catch (error) {
+    clearSession();
     setLoggedOutUi();
     return false;
   }
@@ -91,7 +96,9 @@ function formatDate(dateValue) {
 
 function createTextElement(tag, className, text) {
   const element = document.createElement(tag);
+
   if (className) element.className = className;
+
   element.textContent = text;
   return element;
 }
@@ -125,12 +132,25 @@ function createItemCard(item) {
     `${item.category || "Other"} · ${item.location || "Unknown location"} · ${formatDate(item.item_date)}`
   );
 
-  const description = createTextElement("p", "item-description", item.description || "");
-  const contact = createTextElement("p", "item-contact", `Contact: ${item.contact || "Not provided"}`);
+  const description = createTextElement(
+    "p",
+    "item-description",
+    item.description || ""
+  );
+
+  const contact = createTextElement(
+    "p",
+    "item-contact",
+    `Contact: ${item.contact || "Not provided"}`
+  );
 
   article.append(topRow, title, meta, description, contact);
 
-  if (!item.resolved && getToken()) {
+  const isOwner =
+    currentUserId !== null &&
+    Number(item.user_id) === Number(currentUserId);
+
+  if (!item.resolved && isOwner) {
     const resolveButton = createTextElement(
       "button",
       "button small secondary",
@@ -151,7 +171,10 @@ async function loadItems() {
 
   try {
     const response = await fetch("/api/items");
-    if (!response.ok) throw new Error("Could not load reports.");
+
+    if (!response.ok) {
+      throw new Error("Could not load reports.");
+    }
 
     const items = await response.json();
 
@@ -165,7 +188,7 @@ async function loadItems() {
     for (const item of items) {
       itemsList.append(createItemCard(item));
     }
-  } catch {
+  } catch (error) {
     itemsStatus.textContent =
       "Could not load reports. Check the server and database connection.";
   }
@@ -195,6 +218,13 @@ async function resolveItem(id, button) {
       setLoggedOutUi();
       window.location.href = "login.html";
       return;
+    }
+
+    if (response.status === 403) {
+      throw new Error(
+        result.message ||
+        "Only the person who created this report can mark it as resolved."
+      );
     }
 
     if (!response.ok) {
@@ -259,7 +289,10 @@ async function submitReport(event) {
     }
 
     form.reset();
-    dateInput.valueAsDate = new Date();
+
+    if (dateInput) {
+      dateInput.valueAsDate = new Date();
+    }
 
     formMessage.textContent = "Report added successfully.";
     formMessage.className = "message success";
