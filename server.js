@@ -4,13 +4,18 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const pool = require("./db");
-
+const authRoutes =
+require("./routes/authRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 
 app.use(express.json());
+app.use(
+"/api/auth",
+authRoutes
+);
 app.use(express.static(path.join(__dirname, "public")));
 
 
@@ -37,7 +42,9 @@ app.get("/api/items", async (req, res) => {
 });
 
 
-app.post("/api/items", async (req, res) => {
+const authenticate =
+require("./middleware/authMiddleware");
+app.post("/api/items", authenticate, async (req, res) => {
   const {
     title,
     type,
