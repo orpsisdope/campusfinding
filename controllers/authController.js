@@ -94,8 +94,8 @@ process.env.JWT_SECRET
 
 
 res.json({
-token,
-username:user.username
+    token,
+    username:user.username
 });
 
 

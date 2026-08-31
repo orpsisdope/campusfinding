@@ -149,7 +149,6 @@ form.addEventListener("submit", async (event) => {
 
   try {
     const token = localStorage.getItem("token");
-    
     if (!token) {
     alert("Please login before submitting a report.");
     window.location.href = "login.html";
