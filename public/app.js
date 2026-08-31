@@ -1,3 +1,11 @@
+const username = localStorage.getItem("username");
+
+const welcome = document.getElementById("welcome");
+
+if (username && welcome) {
+  welcome.textContent = "Welcome " + username;
+}
+
 const form = document.querySelector("#report-form");
 const formMessage = document.querySelector("#form-message");
 const itemsList = document.querySelector("#items-list");
@@ -30,7 +38,7 @@ function createTextElement(tag, className, text) {
   }
 
   element.textContent = text;
-  return element;
+  return element;U 
 }
 
 function createItemCard(item) {
