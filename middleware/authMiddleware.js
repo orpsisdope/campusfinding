@@ -1,44 +1,42 @@
-const jwt=require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
+function authenticate(req, res, next) {
+  const authorization = req.get("authorization") || "";
 
-function authenticate(req,res,next){
+  if (!authorization.startsWith("Bearer ")) {
+    return res.status(401).json({
+      message: "Login required."
+    });
+  }
 
-const token =
-req.headers.authorization;
+  const token = authorization.slice(7).trim();
 
+  if (!token) {
+    return res.status(401).json({
+      message: "Login required."
+    });
+  }
 
-if(!token){
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
 
-return res.status(401).json({
-message:"Login required"
-});
+    if (!decoded || !decoded.id) {
+      return res.status(401).json({
+        message: "Invalid token."
+      });
+    }
 
+    req.user = decoded;
+
+    return next();
+  } catch (error) {
+    return res.status(401).json({
+      message: "Invalid or expired token."
+    });
+  }
 }
 
-
-try{
-
-const decoded =
-jwt.verify(
-token.replace("Bearer ",""),
-process.env.JWT_SECRET
-);
-
-
-req.user=decoded;
-
-next();
-
-
-}catch(error){
-
-res.status(401).json({
-message:"Invalid token"
-});
-
-}
-
-}
-
-
-module.exports=authenticate;
+module.exports = authenticate;

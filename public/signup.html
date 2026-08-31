@@ -1,17 +1,186 @@
-<h1>Create Account</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-<input id="username" placeholder="Username">
+<head>
 
-<input id="email" placeholder="Email">
+  <meta charset="UTF-8">
 
-<input id="password" 
-type="password"
-placeholder="Password">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
+  <title>
+    Sign Up - CampusFind
+  </title>
 
-<button onclick="signup()">
-Create account
-</button>
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 
+  <script
+    src="auth.js"
+    defer
+  ></script>
 
-<script src="auth.js"></script>
+</head>
+
+<body>
+
+  <header class="site-header">
+
+    <div class="container nav-row">
+
+      <a
+        class="logo"
+        href="index.html"
+      >
+        CampusFind
+      </a>
+
+      <nav>
+
+        <a href="index.html">
+          Home
+        </a>
+
+        <a href="about.html">
+          About
+        </a>
+
+        <a href="login.html">
+          Login
+        </a>
+
+        <a
+          class="active"
+          href="signup.html"
+        >
+          Sign Up
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+  <main>
+
+    <section class="section">
+
+      <div class="container narrow">
+
+        <div class="section-heading">
+
+          <p class="eyebrow">
+            Account
+          </p>
+
+          <h1>
+            Create Account
+          </h1>
+
+          <p>
+            Create an account,
+            then you can submit
+            lost and found reports.
+          </p>
+
+        </div>
+
+        <form
+          id="signup-form"
+          class="report-form"
+        >
+
+          <label>
+            Username
+
+            <input
+              id="username"
+              name="username"
+              type="text"
+              minlength="3"
+              maxlength="50"
+              autocomplete="username"
+              required
+            >
+          </label>
+
+          <label>
+            Email
+
+            <input
+              id="email"
+              name="email"
+              type="email"
+              maxlength="120"
+              autocomplete="email"
+              required
+            >
+          </label>
+
+          <label>
+            Password
+
+            <input
+              id="password"
+              name="password"
+              type="password"
+              minlength="6"
+              maxlength="100"
+              autocomplete="new-password"
+              required
+            >
+          </label>
+
+          <button
+            class="button"
+            type="submit"
+          >
+            Create account
+          </button>
+
+          <p
+            id="auth-message"
+            class="message"
+            aria-live="polite"
+          ></p>
+
+          <p class="message">
+            Already have an account?
+
+            <a href="login.html">
+              Log in here
+            </a>.
+          </p>
+
+        </form>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+
+    <div class="container footer-row">
+
+      <p>
+        CampusFind
+      </p>
+
+      <p>
+        Fullstack Development Project
+      </p>
+
+    </div>
+
+  </footer>
+
+</body>
+
+</html>

@@ -1,18 +1,165 @@
-<h1>Login</h1>
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8">
 
-<input id="email"
-placeholder="Email">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
+  <title>
+    Login - CampusFind
+  </title>
 
-<input id="password"
-type="password"
-placeholder="Password">
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 
+  <script
+    src="auth.js"
+    defer
+  ></script>
+</head>
 
-<button onclick="login()">
-Login
-</button>
+<body>
 
+  <header class="site-header">
+    <div class="container nav-row">
 
-<script src="auth.js"></script>
+      <a
+        class="logo"
+        href="index.html"
+      >
+        CampusFind
+      </a>
+
+      <nav>
+        <a href="index.html">
+          Home
+        </a>
+
+        <a href="about.html">
+          About
+        </a>
+
+        <a
+          class="active"
+          href="login.html"
+        >
+          Login
+        </a>
+
+        <a href="signup.html">
+          Sign Up
+        </a>
+      </nav>
+
+    </div>
+  </header>
+
+  <main>
+
+    <section class="section">
+
+      <div class="container narrow">
+
+        <div class="section-heading">
+
+          <p class="eyebrow">
+            Account
+          </p>
+
+          <h1>
+            Login
+          </h1>
+
+          <p>
+            Log in to report a lost
+            or found item.
+          </p>
+
+        </div>
+
+        <form
+          id="login-form"
+          class="report-form"
+        >
+
+          <label>
+            Email
+
+            <input
+              id="email"
+              name="email"
+              type="email"
+              maxlength="120"
+              autocomplete="email"
+              required
+            >
+          </label>
+
+          <label>
+            Password
+
+            <input
+              id="password"
+              name="password"
+              type="password"
+              minlength="6"
+              maxlength="100"
+              autocomplete="current-password"
+              required
+            >
+          </label>
+
+          <button
+            class="button"
+            type="submit"
+          >
+            Login
+          </button>
+
+          <p
+            id="auth-message"
+            class="message"
+            aria-live="polite"
+          ></p>
+
+          <p class="message">
+            No account yet?
+
+            <a href="signup.html">
+              Create one here
+            </a>.
+          </p>
+
+        </form>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+
+    <div class="container footer-row">
+
+      <p>
+        CampusFind
+      </p>
+
+      <p>
+        Fullstack Development Project
+      </p>
+
+    </div>
+
+  </footer>
+
+</body>
+
+</html>

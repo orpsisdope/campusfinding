@@ -1,135 +1,413 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>CampusFind</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+  <script
+    src="app.js"
+    defer
+  ></script>
+
 </head>
+
 <body>
+
   <header class="site-header">
+
     <div class="container nav-row">
-      <a class="logo" href="index.html">CampusFind</a>
+
+      <a
+        class="logo"
+        href="index.html"
+      >
+        CampusFind
+      </a>
+
       <nav>
-        <a class="active" href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="login.html">Login</a>
-        <a href="signup.html">Sign Up</a>
+
+        <a
+          class="active"
+          href="index.html"
+        >
+          Home
+        </a>
+
+        <a href="about.html">
+          About
+        </a>
+
+        <a
+          id="login-link"
+          href="login.html"
+        >
+          Login
+        </a>
+
+        <a
+          id="signup-link"
+          href="signup.html"
+        >
+          Sign Up
+        </a>
+
         <span id="welcome"></span>
+
+        <button
+          id="logout-button"
+          class="button small secondary"
+          type="button"
+          hidden
+        >
+          Logout
+        </button>
+
       </nav>
+
     </div>
+
   </header>
 
+
   <main>
+
     <section class="hero">
+
       <div class="container hero-content">
-        <p class="eyebrow">University Lost &amp; Found</p>
-        <h1>Help lost things find their way home.</h1>
-        <p>
-          Report something you lost or found on campus and make it easier
-          for students to reconnect with their belongings.
+
+        <p class="eyebrow">
+          University Lost &amp; Found
         </p>
-        <a class="button" href="#report-form">Report an item</a>
+
+        <h1>
+          Help lost things find
+          their way home.
+        </h1>
+
+        <p>
+          Report something you lost
+          or found on campus and make
+          it easier for students to
+          reconnect with their belongings.
+        </p>
+
+        <a
+          class="button"
+          href="#report-form"
+        >
+          Report an item
+        </a>
+
       </div>
+
     </section>
 
-        <section class="section">
+
+    <section class="section">
+
       <div class="container two-column">
+
         <div>
+
           <div class="section-heading">
-            <p class="eyebrow">New report</p>
-            <h2>Report an item</h2>
-            <p>Fill in the information below. All fields are required.</p>
+
+            <p class="eyebrow">
+              New report
+            </p>
+
+            <h2>
+              Report an item
+            </h2>
+
+            <p>
+              Fill in the information
+              below. All fields are required.
+            </p>
+
           </div>
 
-          <form id="report-form" class="report-form">
+
+          <form
+            id="report-form"
+            class="report-form"
+          >
+
             <label>
+
               Title
-              <input id="title" name="title" maxlength="100" placeholder="Example: Black backpack" required>
+
+              <input
+                id="title"
+                name="title"
+                maxlength="100"
+                placeholder="Example: Black backpack"
+                required
+              >
+
             </label>
+
 
             <div class="form-row">
-              <label>
-                Type
-                <select id="type" name="type" required>
-                  <option value="lost">Lost</option>
-                  <option value="found">Found</option>
-                </select>
-              </label>
 
               <label>
-                Category
-                <select id="category" name="category" required>
-                  <option value="Bag">Bag</option>
-                  <option value="Electronics">Electronics</option>
-                  <option value="Keys">Keys</option>
-                  <option value="Clothing">Clothing</option>
-                  <option value="Books">Books</option>
-                  <option value="Other">Other</option>
+
+                Type
+
+                <select
+                  id="type"
+                  name="type"
+                  required
+                >
+
+                  <option value="lost">
+                    Lost
+                  </option>
+
+                  <option value="found">
+                    Found
+                  </option>
+
                 </select>
+
               </label>
+
+
+              <label>
+
+                Category
+
+                <select
+                  id="category"
+                  name="category"
+                  required
+                >
+
+                  <option value="Bag">
+                    Bag
+                  </option>
+
+                  <option value="Electronics">
+                    Electronics
+                  </option>
+
+                  <option value="Keys">
+                    Keys
+                  </option>
+
+                  <option value="Clothing">
+                    Clothing
+                  </option>
+
+                  <option value="Books">
+                    Books
+                  </option>
+
+                  <option value="Other">
+                    Other
+                  </option>
+
+                </select>
+
+              </label>
+
             </div>
 
-            
+
             <label>
+
               Location
-              <input id="location" name="location" maxlength="100" placeholder="Example: University Library" required>
+
+              <input
+                id="location"
+                name="location"
+                maxlength="100"
+                placeholder="Example: University Library"
+                required
+              >
+
             </label>
 
+
             <label>
+
               Date
-              <input id="item_date" name="item_date" type="date" required>
+
+              <input
+                id="item_date"
+                name="item_date"
+                type="date"
+                required
+              >
+
             </label>
 
+
             <label>
+
               Description
-              <textarea id="description" name="description" rows="4" placeholder="Describe the item so it can be recognized." required></textarea>
+
+              <textarea
+                id="description"
+                name="description"
+                rows="4"
+                placeholder="Describe the item so it can be recognized."
+                required
+              ></textarea>
+
             </label>
+
 
             <label>
+
               Contact
-              <input id="contact" name="contact" maxlength="120" placeholder="Email or phone number" required>
+
+              <input
+                id="contact"
+                name="contact"
+                maxlength="120"
+                placeholder="Email or phone number"
+                required
+              >
+
             </label>
 
-            <button class="button" type="submit">Submit report</button>
-            <p id="form-message" class="message" aria-live="polite"></p>
+
+            <button
+              class="button"
+              type="submit"
+            >
+              Submit report
+            </button>
+
+
+            <p
+              id="form-message"
+              class="message"
+              aria-live="polite"
+            ></p>
+
           </form>
+
         </div>
+
 
         <aside class="info-card">
-          <h2>How it works</h2>
+
+          <h2>
+            How it works
+          </h2>
+
           <ol>
-            <li>Report the lost or found item.</li>
-            <li>The report appears on the board.</li>
-            <li>Students use the contact information to get in touch.</li>
-            <li>Mark the report as resolved when the item is returned.</li>
+
+            <li>
+              Report the lost or found item.
+            </li>
+
+            <li>
+              The report appears on the board.
+            </li>
+
+            <li>
+              Students use the contact information
+              to get in touch.
+            </li>
+
+            <li>
+              Mark the report as resolved when
+              the item is returned.
+            </li>
+
           </ol>
+
         </aside>
+
       </div>
+
     </section>
+
 
     <section class="section board-section">
+
       <div class="container">
-        <div class="section-heading board-heading">
+
+        <div
+          class="section-heading board-heading"
+        >
+
           <div>
-            <p class="eyebrow">Campus board</p>
-            <h2>Recent reports</h2>
+
+            <p class="eyebrow">
+              Campus board
+            </p>
+
+            <h2>
+              Recent reports
+            </h2>
+
           </div>
-          <button id="refresh-button" class="button secondary" type="button">Refresh</button>
+
+
+          <button
+            id="refresh-button"
+            class="button secondary"
+            type="button"
+          >
+            Refresh
+          </button>
+
         </div>
 
-        <p id="items-status" class="message" aria-live="polite">Loading reports...</p>
-        <div id="items-list" class="items-grid"></div>
+
+        <p
+          id="items-status"
+          class="message"
+          aria-live="polite"
+        >
+          Loading reports...
+        </p>
+
+
+        <div
+          id="items-list"
+          class="items-grid"
+        ></div>
+
       </div>
+
     </section>
+
   </main>
 
+
   <footer class="site-footer">
+
     <div class="container footer-row">
-      <p>CampusFind</p>
-      <p>Fullstack Development Project</p>
+
+      <p>
+        CampusFind
+      </p>
+
+      <p>
+        Fullstack Development Project
+      </p>
+
     </div>
+
   </footer>
+
 </body>
+
 </html>

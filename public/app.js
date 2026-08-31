@@ -1,26 +1,85 @@
-const username = localStorage.getItem("username");
-
+const form = document.getElementById("report-form");
+const formMessage = document.getElementById("form-message");
+const itemsList = document.getElementById("items-list");
+const itemsStatus = document.getElementById("items-status");
+const refreshButton = document.getElementById("refresh-button");
+const dateInput = document.getElementById("item_date");
 const welcome = document.getElementById("welcome");
+const loginLink = document.getElementById("login-link");
+const signupLink = document.getElementById("signup-link");
+const logoutButton = document.getElementById("logout-button");
 
-if (username && welcome) {
-  welcome.textContent = "Welcome " + username;
+function getToken() {
+  return localStorage.getItem("token") || "";
 }
 
-const form = document.querySelector("#report-form");
-const formMessage = document.querySelector("#form-message");
-const itemsList = document.querySelector("#items-list");
-const itemsStatus = document.querySelector("#items-status");
-const refreshButton = document.querySelector("#refresh-button");
-const dateInput = document.querySelector("#item_date");
+function clearSession() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("username");
+}
 
-function formatDate(dateValue) {
-  if (!dateValue) {
-    return "No date";
+function setLoggedOutUi() {
+  if (welcome) welcome.textContent = "";
+  if (loginLink) loginLink.hidden = false;
+  if (signupLink) signupLink.hidden = false;
+  if (logoutButton) logoutButton.hidden = true;
+}
+
+function setLoggedInUi(username) {
+  if (welcome) welcome.textContent = `Welcome ${username}`;
+  if (loginLink) loginLink.hidden = true;
+  if (signupLink) signupLink.hidden = true;
+  if (logoutButton) logoutButton.hidden = false;
+}
+
+async function validateSession() {
+  const token = getToken();
+
+  if (!token) {
+    clearSession();
+    setLoggedOutUi();
+    return false;
   }
 
-  const dateOnly = String(dateValue).slice(0, 10);
-  const [year, month, day] = dateOnly.split("-").map(Number);
+  try {
+    const response = await fetch("/api/auth/me", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
 
+    if (!response.ok) {
+      clearSession();
+      setLoggedOutUi();
+      return false;
+    }
+
+    const data = await response.json();
+    const username = data.user && data.user.username;
+
+    if (!username) {
+      clearSession();
+      setLoggedOutUi();
+      return false;
+    }
+
+    localStorage.setItem("username", username);
+    setLoggedInUi(username);
+    return true;
+  } catch {
+    setLoggedOutUi();
+    return false;
+  }
+}
+
+function logout() {
+  clearSession();
+  setLoggedOutUi();
+  window.location.href = "index.html";
+}
+
+function formatDate(dateValue) {
+  if (!dateValue) return "No date";
+
+  const [year, month, day] = String(dateValue).slice(0, 10).split("-").map(Number);
   const date = new Date(year, month - 1, day);
 
   return date.toLocaleDateString("en-GB", {
@@ -32,11 +91,7 @@ function formatDate(dateValue) {
 
 function createTextElement(tag, className, text) {
   const element = document.createElement(tag);
-
-  if (className) {
-    element.className = className;
-  }
-
+  if (className) element.className = className;
   element.textContent = text;
   return element;
 }
@@ -51,7 +106,7 @@ function createItemCard(item) {
   const typeBadge = createTextElement(
     "span",
     `badge ${item.type}`,
-    item.type.toUpperCase()
+    String(item.type || "").toUpperCase()
   );
 
   const statusBadge = createTextElement(
@@ -62,19 +117,26 @@ function createItemCard(item) {
 
   topRow.append(typeBadge, statusBadge);
 
-  const title = createTextElement("h3", "", item.title);
+  const title = createTextElement("h3", "", item.title || "Untitled report");
+
   const meta = createTextElement(
     "p",
     "item-meta",
-    `${item.category} · ${item.location} · ${formatDate(item.item_date)}`
+    `${item.category || "Other"} · ${item.location || "Unknown location"} · ${formatDate(item.item_date)}`
   );
-  const description = createTextElement("p", "item-description", item.description);
-  const contact = createTextElement("p", "item-contact", `Contact: ${item.contact}`);
+
+  const description = createTextElement("p", "item-description", item.description || "");
+  const contact = createTextElement("p", "item-contact", `Contact: ${item.contact || "Not provided"}`);
 
   article.append(topRow, title, meta, description, contact);
 
-  if (!item.resolved) {
-    const resolveButton = createTextElement("button", "button small secondary", "Mark as resolved");
+  if (!item.resolved && getToken()) {
+    const resolveButton = createTextElement(
+      "button",
+      "button small secondary",
+      "Mark as resolved"
+    );
+
     resolveButton.type = "button";
     resolveButton.addEventListener("click", () => resolveItem(item.id, resolveButton));
     article.append(resolveButton);
@@ -89,14 +151,11 @@ async function loadItems() {
 
   try {
     const response = await fetch("/api/items");
-
-    if (!response.ok) {
-      throw new Error("Could not load reports.");
-    }
+    if (!response.ok) throw new Error("Could not load reports.");
 
     const items = await response.json();
 
-    if (items.length === 0) {
+    if (!Array.isArray(items) || items.length === 0) {
       itemsStatus.textContent = "No reports yet. Add the first one above.";
       return;
     }
@@ -106,34 +165,62 @@ async function loadItems() {
     for (const item of items) {
       itemsList.append(createItemCard(item));
     }
-  } catch (error) {
-    itemsStatus.textContent = "Could not load reports. Check the server and database connection.";
+  } catch {
+    itemsStatus.textContent =
+      "Could not load reports. Check the server and database connection.";
   }
 }
 
 async function resolveItem(id, button) {
+  const token = getToken();
+
+  if (!token) {
+    window.location.href = "login.html";
+    return;
+  }
+
   button.disabled = true;
   button.textContent = "Updating...";
 
   try {
     const response = await fetch(`/api/items/${id}/resolve`, {
-      method: "PATCH"
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${token}` }
     });
 
+    const result = await response.json().catch(() => ({}));
+
+    if (response.status === 401) {
+      clearSession();
+      setLoggedOutUi();
+      window.location.href = "login.html";
+      return;
+    }
+
     if (!response.ok) {
-      throw new Error("Could not update report.");
+      throw new Error(result.message || "Could not update report.");
     }
 
     await loadItems();
   } catch (error) {
     button.disabled = false;
     button.textContent = "Mark as resolved";
-    itemsStatus.textContent = "Could not update the report. Please try again.";
+    itemsStatus.textContent =
+      error.message || "Could not update the report. Please try again.";
   }
 }
 
-form.addEventListener("submit", async (event) => {
+async function submitReport(event) {
   event.preventDefault();
+
+  const token = getToken();
+
+  if (!token) {
+    alert("Please log in before submitting a report.");
+    window.location.href = "login.html";
+    return;
+  }
+
   formMessage.textContent = "Submitting...";
   formMessage.className = "message";
 
@@ -148,23 +235,24 @@ form.addEventListener("submit", async (event) => {
   };
 
   try {
-    const token = localStorage.getItem("token");
-    if (!token) {
-    alert("Please login before submitting a report.");
-    window.location.href = "login.html";
-    return;
-}
-    const response = await fetch("/api/items",
-    {
-    method:"POST",
-    headers:{
-    "Content-Type":"application/json",
-    "Authorization":"Bearer " + token
-    },
-    body:JSON.stringify(data)
+    const response = await fetch("/api/items", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
     });
-    
-    const result = await response.json();
+
+    const result = await response.json().catch(() => ({}));
+
+    if (response.status === 401) {
+      clearSession();
+      setLoggedOutUi();
+      alert("Your login session expired. Please log in again.");
+      window.location.href = "login.html";
+      return;
+    }
 
     if (!response.ok) {
       throw new Error(result.message || "Could not submit report.");
@@ -172,16 +260,25 @@ form.addEventListener("submit", async (event) => {
 
     form.reset();
     dateInput.valueAsDate = new Date();
+
     formMessage.textContent = "Report added successfully.";
     formMessage.className = "message success";
+
     await loadItems();
   } catch (error) {
-    formMessage.textContent = error.message;
+    formMessage.textContent = error.message || "Could not submit report.";
     formMessage.className = "message error";
   }
-});
+}
 
-refreshButton.addEventListener("click", loadItems);
+async function init() {
+  if (dateInput) dateInput.valueAsDate = new Date();
+  if (logoutButton) logoutButton.addEventListener("click", logout);
+  if (form) form.addEventListener("submit", submitReport);
+  if (refreshButton) refreshButton.addEventListener("click", loadItems);
 
-dateInput.valueAsDate = new Date();
-loadItems();
+  await validateSession();
+  await loadItems();
+}
+
+init();
