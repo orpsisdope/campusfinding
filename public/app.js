@@ -148,14 +148,18 @@ form.addEventListener("submit", async (event) => {
   };
 
   try {
-    const response = await fetch("/api/items", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
+    const token = localStorage.getItem("token");
 
+    const response = await fetch("/api/items",
+    {
+    method:"POST",
+    headers:{
+    "Content-Type":"application/json",
+    "Authorization":"Bearer " + token
+    },
+    body:JSON.stringify(data)
+    });
+    
     const result = await response.json();
 
     if (!response.ok) {
