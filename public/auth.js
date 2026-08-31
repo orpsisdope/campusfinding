@@ -1,77 +1,56 @@
-async function signup(){
-
-const response =
-await fetch("/api/auth/signup",
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-
-username:
-username.value,
-
-email:
-email.value,
-
-password:
-password.value
-
-})
-
-});
-
-
-alert("Account created");
-
-}
-
-
-
 async function login(){
 
+    const response = await fetch("/api/auth/login", {
 
-const response =
-await fetch("/api/auth/login",
-{
+        method:"POST",
 
-method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
 
-headers:{
-"Content-Type":"application/json"
-},
+        body:JSON.stringify({
 
-body:JSON.stringify({
+            email: document.getElementById("email").value,
 
-email:
-email.value,
+            password: document.getElementById("password").value
 
-password:
-password.value
+        })
 
-})
-
-});
+    });
 
 
-const data =
-await response.json();
-console.log(data);
-
-localStorage.setItem(
-"token",
-data.token
-);
+    const data = await response.json();
 
 
-localStorage.setItem(
-"username",
-data.username
-);
+    if(!response.ok){
+
+        alert(data.message);
+        return;
+
+    }
 
 
-window.location="index.html";
+    if(!data.token || !data.username){
 
+        alert("Login response is missing token or username");
+        console.log(data);
+        return;
+
+    }
+
+
+    localStorage.setItem(
+        "token",
+        data.token
+    );
+
+
+    localStorage.setItem(
+        "username",
+        data.username
+    );
+
+
+    window.location="index.html";
 
 }
