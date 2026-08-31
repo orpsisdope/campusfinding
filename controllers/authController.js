@@ -7,8 +7,7 @@ exports.signup = async(req,res)=>{
 
 const {username,email,password}=req.body;
 
-if(!username  !email 
- !password){
+if(!username || !email || !password){
 
 return res.status(400).json({
 message:"Username, email, and password are required"
@@ -24,16 +23,12 @@ await bcrypt.hash(password,10);
 try{
 
 const result = await pool.query(
-
-INSERT INTO users(username,email,password)
-VALUES($1,$2,$3)
-RETURNING id,username,email
-,
-[
-username,
-email,
-hashedPassword
-]
+  'INSERT INTO users(username,email,password) VALUES($1,$2,$3) RETURNING id,username,email',
+  [
+    username,
+    email,
+    hashedPassword
+  ]
 );
 
 
@@ -124,7 +119,6 @@ res.json({
     token,
     username:user.username
 });
-
 
 }catch(error){
 
