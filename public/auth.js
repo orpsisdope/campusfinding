@@ -54,3 +54,42 @@ async function login(){
     window.location="index.html";
 
 }
+
+async function signup(){
+
+    const response = await fetch("/api/auth/signup", {
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+            username: document.getElementById("username").value,
+
+            email: document.getElementById("email").value,
+
+            password: document.getElementById("password").value
+
+        })
+
+    });
+
+
+    const data = await response.json();
+
+
+    if(!response.ok){
+
+        alert(data.message);
+        return;
+
+    }
+
+
+    alert("Account created. Please log in.");
+    window.location="login.html";
+
+}

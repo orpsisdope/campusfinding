@@ -38,7 +38,7 @@ function createTextElement(tag, className, text) {
   }
 
   element.textContent = text;
-  return element;U 
+  return element;
 }
 
 function createItemCard(item) {

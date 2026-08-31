@@ -7,6 +7,15 @@ exports.signup = async(req,res)=>{
 
 const {username,email,password}=req.body;
 
+if(!username  !email 
+ !password){
+
+return res.status(400).json({
+message:"Username, email, and password are required"
+});
+
+}
+
 
 const hashedPassword =
 await bcrypt.hash(password,10);
@@ -15,11 +24,11 @@ await bcrypt.hash(password,10);
 try{
 
 const result = await pool.query(
-`
+
 INSERT INTO users(username,email,password)
 VALUES($1,$2,$3)
 RETURNING id,username,email
-`,
+,
 [
 username,
 email,
@@ -32,6 +41,14 @@ res.json(result.rows[0]);
 
 
 }catch(error){
+
+if(error.code==="23505"){
+
+return res.status(409).json({
+message:"Username or email already exists"
+});
+
+}
 
 res.status(500).json({
 message:"Signup failed"
@@ -46,6 +63,16 @@ message:"Signup failed"
 exports.login = async(req,res)=>{
 
 const {email,password}=req.body;
+
+if(!email || !password){
+
+return res.status(400).json({
+message:"Email and password are required"
+});
+
+}
+
+try{
 
 
 const result =
@@ -97,6 +124,15 @@ res.json({
     token,
     username:user.username
 });
+
+
+}catch(error){
+
+res.status(500).json({
+message:"Login failed"
+});
+
+}
 
 
 };

@@ -1,5 +1,9 @@
 require("dotenv").config();
 
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET is missing. Add it to your .env file.");
+}
+
 
 const express = require("express");
 const path = require("path");
@@ -98,10 +102,11 @@ app.post("/api/items", authenticate, async (req, res) => {
   try {
     const result = await pool.query(
       `INSERT INTO items
-       (title, type, category, location, item_date, description, contact)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
+       (user_id, title, type, category, location, item_date, description, contact)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING *`,
       [
+        req.user.id,
         values.title,
         values.type,
         values.category,
@@ -171,5 +176,3 @@ app.use("/api", (req, res) => {
 app.listen(PORT, () => {
   console.log(`CampusFind is running on http://localhost:${PORT}`);
 });
-
-
